@@ -1,11 +1,22 @@
 Package: tidyklips
-Title: What the Package Does (One Line, Title Case)
+Title: Load Korea Labor & Income Panel Study(KLIPS) Data as 'tidyverse' and 'ts'-Ready Data Frames
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Cheon Geun", "Choi", , "cheongeun.choi@gmail.com", role = c("aut", "cre"))
+Description: tidyklips is an R package that allows users to interface with the Korea Labor Institute;s yearly KLIPS(Korea Labor & Income Panel Study) and return tidyverse-ready data frames, optionally with time-series features included.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+LazyData: true
+Imports: 
+    magrittr,
+    stringr,
+    readxl,
+    haven,
+    dplyr
+Depends: 
+    R (>= 3.5)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
