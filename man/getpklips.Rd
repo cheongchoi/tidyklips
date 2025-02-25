@@ -2,7 +2,7 @@
 % Please edit documentation in R/getpklips.R
 \name{getpklips}
 \alias{getpklips}
-\title{Obtain data.frame for the Korea Labor & Income Panel Study (only household member survey)}
+\title{`getpklips()' is used to obtain data.frame for KLIPS (household member survey)}
 \usage{
 getpklips(
   path,
@@ -13,32 +13,36 @@ getpklips(
 )
 }
 \arguments{
-\item{path}{A string specifying folder containing KLIPS household member survey data}
+\item{path}{A string vector specifying folder containing KLIPS household member survey data}
 
-\item{year}{integer specifying the years from 1998 to 2023 that the user wants to include in the dataframe.}
+\item{year}{an integer vector  specifying the years from 1998 to 2023 that the user wants to include in the dataframe.}
 
-\item{datatype}{A string specifying the format of the raw data you want to convert to a data frame ("spss", "sas", "stata", "excel")}
+\item{datatype}{A string vector specifying the format of the raw data you want to convert to a data frame ("spss", "sas", "stata", "excel")}
 
-\item{klipsvars}{A string or strings specifying the variables in the raw data that you want to convert to a data frame ("0101", "0107")}
+\item{klipsvars}{A string vector specifying the variables in the raw data that you want to convert to a data frame ("0101", "0107")}
 
-\item{outvars}{A string or strings specifying the variable names of converted data ("gender", "age")}
+\item{outvars}{A string vector specifying the variable names of converted data ("gender", "age")}
 }
 \value{
 A data frame containing klips household member data with the specified years and variables.
+\itemize{
+\item \code{getpklips()} returns an integer dataframe with two and more columns and
+rows for each respondent. The first column, \code{pid},
+refers to the respondent id number, and the last column, \code{year},
+refers to the year that the user wants to include in the dataframe.
+}
 }
 \description{
-Obtain data.frame for the Korea Labor & Income Panel Study (only household member survey)
+`getpklips()' is used to obtain data.frame for KLIPS (household member survey)
 }
 \examples{
-\dontrun{
-# Plot of race/ethnicity by county in Illinois for 2010
-library(tidyklips)
-library(tidyverse)
 
-df <- getpklips(path = "../datastata", year = 2022:2023, datatype = "stata")
+path <- system.file("extdata", package = "tidyklips")
+df <- getpklips(path = path, year = 1998, datatype = "stata")
 df \%>\%
-  group_by(year, gender) \%>\%
-  summarise(count = n(),
-            proportion = count/sum(gender, na.rm=TRUE) )
-}
+  dplyr::group_by(year, gender) \%>\%
+  dplyr::summarise(count = dplyr::n()) \%>\%
+  dplyr::mutate(proportion = count / sum(count))
+
+
 }

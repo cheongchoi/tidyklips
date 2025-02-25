@@ -18,38 +18,57 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of tidyklips is to ...
+tidyklips is an R package that allows users to interface with the Korea Labor Institute's yearly KLIPS(Korea Labor & Income Panel Study) and return tidyverse-ready data frames, optionally with time-series features included.
+
 
 ## Installation
 
-You can install the development version of tidyklips from [GitHub](https://github.com/) with:
+You can install the development version of tidyklips from [GitHub](https://github.com/cheongchoi/tidyklips) with:
 
-``` r
-# install.packages("pak")
-pak::pak("cheongchoi/tidyklips")
+```{r}
+# install from CRAN
+install.packages("tidyklips")
+
+# install dev version
+devtools::install_github("cheongchoi/tidyklips")
+
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to obain a dataframe file from KLIPS:
 
-```{r example}
+```{r eval=FALSE}
+# first, you need to download the .zip file from KLIPS homepage <https://www.kli.re.kr/klips>.
+# second, you need to unzip that file.
+# third, you need to remember the folder path.
+
 library(tidyklips)
-## basic example code
+library(dplyr)
+library(magrittr)
+path <- system.file("extdata", package = "tidyklips")
+df <- getpklips(path = mypath, year = 2023, datatype = "stata") 
+
+# you need to adjust the path. 
+# This code is equivalent to the following code
+
+df <- klips26p
+df2 <- df 
+    dplyr::group_by(gender) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
+    dplyr::mutate(proportion = count / sum(count))
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+```{r eval=FALSE}
+summary(df)
+
+```
+```{r eval=FALSE}
+summary(df2)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r pressure, echo = FALSE, eval=FALSE}
+barplot(df2$proportion~as.factor(df2$gender))
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

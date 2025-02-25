@@ -6,8 +6,9 @@
 #' @format Data frame with columns
 #' \describe{
 #' \item{pid}{response id.}
-#' \item{p260101}{gender.}
+#' \item{gender}{gender.}
+#' \item{age}{age.}
 #' }
 #' @examples
-#'   klips26p
+#' klips26p
 "klips26p"

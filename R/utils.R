@@ -1,3 +1,3 @@
 # global variables --------------------------------------------------------
 
-utils::globalVariables(c("pid"))
+utils::globalVariables(c("pid", "year", "gender"))

@@ -1,13 +1,18 @@
-#' Obtain data.frame for the Korea Labor & Income Panel Study (only household member survey)
+#' `getpklips()' is used to obtain data.frame for KLIPS (household member survey)
 #'
 #'
-#' @param path A string specifying folder containing KLIPS household member survey data
-#' @param year integer specifying the years from 1998 to 2023 that the user wants to include in the dataframe.
-#' @param datatype A string specifying the format of the raw data you want to convert to a data frame ("spss", "sas", "stata", "excel")
-#' @param klipsvars A string or strings specifying the variables in the raw data that you want to convert to a data frame ("0101", "0107")
-#' @param outvars A string or strings specifying the variable names of converted data ("gender", "age")
+#' @param path A string vector specifying folder containing KLIPS household member survey data
+#' @param year an integer vector  specifying the years from 1998 to 2023 that the user wants to include in the dataframe.
+#' @param datatype A string vector specifying the format of the raw data you want to convert to a data frame ("spss", "sas", "stata", "excel")
+#' @param klipsvars A string vector specifying the variables in the raw data that you want to convert to a data frame ("0101", "0107")
+#' @param outvars A string vector specifying the variable names of converted data ("gender", "age")
 #'
 #' @return A data frame containing klips household member data with the specified years and variables.
+#' * `getpklips()` returns an integer dataframe with two and more columns and
+#'   rows for each respondent. The first column, `pid`,
+#'   refers to the respondent id number, and the last column, `year`,
+#'   refers to the year that the user wants to include in the dataframe.
+#'
 #' @importFrom stringr str_sub
 #' @importFrom readxl read_excel
 #' @importFrom haven read_sav
@@ -23,17 +28,16 @@
 #' @importFrom magrittr %<>%
 #' @importFrom magrittr %>%
 #'
-#' @examples \dontrun{
-#' # Plot of race/ethnicity by county in Illinois for 2010
-#' library(tidyklips)
-#' library(tidyverse)
+#' @examples
 #'
-#' df <- getpklips(path = "../datastata", year = 2022:2023, datatype = "stata")
+#' path <- system.file("extdata", package = "tidyklips")
+#' df <- getpklips(path = path, year = 1998, datatype = "stata")
 #' df %>%
-#'   group_by(year, gender) %>%
-#'   summarise(count = n(),
-#'             proportion = count/sum(gender, na.rm=TRUE) )
-#' }
+#'   dplyr::group_by(year, gender) %>%
+#'   dplyr::summarise(count = dplyr::n()) %>%
+#'   dplyr::mutate(proportion = count / sum(count))
+#'
+#'
 #' @export
 getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), klipsvars=c("0101", "0107"), outvars=c("gender", "age")) {
 
@@ -75,6 +79,8 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
     year == 2021 ~ "24",
     year == 2022 ~ "25",
     year == 2023 ~ "26")
+
+  path <- ifelse ((str_sub(path,-1,-1)=="/") | is.null(path), path, paste0(path, "/"))
 
   headers <- c("pid", outvars, "year")
   df <- data.frame(matrix(, ncol=length(outvars) + 2, nrow =0))
@@ -127,23 +133,6 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
       outputvars <- paste0("temp$", outvars)
 
       temp <- read_sas(data_file = filename,  col_select=c("pid", inputvars))
-      temp <- temp  %>%
-        dplyr::mutate(year = year[i])
-
-      for (j in 1:length(klipsvars)) {
-        colnames(temp)[j+1] <- outvars[j]
-      }
-
-      df <- rbind(df, temp)
-    }
-  } else if (datatype=="spss") {
-
-    for (i in 1:length(year)) {
-      filename <- paste0(path,"/klips", set[i], "p", dtype)
-      inputvars <- paste0("p", set[i], klipsvars)
-      outputvars <- paste0("temp$", outvars)
-
-      temp <- read_sav(file = filename, encoding='utf-8', col_select=c("pid", inputvars))
       temp <- temp  %>%
         dplyr::mutate(year = year[i])
 

@@ -8,7 +8,8 @@
 Data frame with columns
 \describe{
 \item{pid}{response id.}
-\item{p260101}{gender.}
+\item{gender}{gender.}
+\item{age}{age.}
 }
 }
 \source{
@@ -21,6 +22,6 @@ klips26p
 Look up 23364 house member survey response data.
 }
 \examples{
-  klips26p
+klips26p
 }
 \keyword{datasets}
