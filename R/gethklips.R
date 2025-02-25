@@ -1,15 +1,15 @@
-#' `getpklips()' is used to obtain data.frame for KLIPS (household member survey)
+#' `gethklips()' is used to obtain data.frame for KLIPS (head of household survey)
 #'
 #'
-#' @param path A string vector specifying folder containing KLIPS household member survey data
+#' @param path A string vector specifying folder containing KLIPS head of household survey data
 #' @param year an integer vector  specifying the years from 1998 to 2023 that the user wants to include in the dataframe.
 #' @param datatype A string vector specifying the format of the raw data you want to convert to a data frame ("spss", "sas", "stata", "excel")
-#' @param klipsvars A string vector specifying the variables in the raw data that you want to convert to a data frame ("0101", "0107")
-#' @param outvars A string vector specifying the variable names of converted data ("gender", "age")
+#' @param klipsvars A string vector specifying the variables in the raw data that you want to convert to a data frame ("0141", "2102")
+#' @param outvars A string vector specifying the variable names of converted data ("province", "income")
 #'
 #' @return A data frame containing klips household member data with the specified years and variables.
-#' * `getpklips()` returns an integer dataframe with two and more columns and
-#'   rows for each respondent. The first column, `pid`,
+#' * `gethklips()` returns an integer dataframe with two and more columns and
+#'   rows for each head of household. The first column, `hhid`,
 #'   refers to the respondent id number, and the last column, `year`,
 #'   refers to the year that the user wants to include in the dataframe.
 #'
@@ -32,15 +32,15 @@
 #' @examples
 #'
 #' path <- system.file("extdata", package = "tidyklips")
-#' df <- getpklips(path = path, year = 1998, datatype = "stata")
+#' df <- gethklips(path = path, year = 2023, datatype = "stata")
 #' df %>%
-#'   dplyr::group_by(year, gender) %>%
+#'   dplyr::group_by(year) %>%
 #'   dplyr::summarise(count = dplyr::n()) %>%
 #'   dplyr::mutate(proportion = count / sum(count))
 #'
 #'
 #' @export
-getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), klipsvars=c("0101", "0107"), outvars=c("gender", "age")) {
+gethklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), klipsvars=c("0141", "2102"), outvars=c("province", "income")) {
   dtype <- ifelse(datatype == "stata", ".dta",
                   ifelse(datatype=="spss", ".sav",
                          ifelse(datatype=="sas", ".sas7bdat", ".xlsx")))
@@ -76,7 +76,7 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
 
   path <- ifelse ((str_sub(path,-1,-1)=="/") | is.null(path), path, paste0(path, "/"))
 
-  headers <- c("pid", outvars, "year")
+  headers <- c("orghid18", outvars, "year")
   df <- data.frame(matrix(, ncol=length(outvars) + 2, nrow =0))
   names(df) <- headers
   cols <- sapply(df, is.logical)
@@ -89,14 +89,14 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
         if (str_width(klipsvars[k])<=3 | str_width(klipsvars[k]) > 4) {
           inputvars[k] <- klipsvars[k]
         } else {
-          inputvars[k] <- paste0("p", set[i], klipsvars[k])
+          inputvars[k] <- paste0("h", set[i], klipsvars[k])
         }
       }
 
-      filename <- paste0(path,"klips", set[i], "p", dtype)
+      filename <- paste0(path,"klips", set[i], "h", dtype)
       outputvars <- paste0("temp$", outvars)
 
-      temp <- read_dta(file = filename, encoding='utf-8', col_select=c("pid", inputvars))
+      temp <- read_dta(file = filename, encoding='utf-8', col_select=c("orghid18", inputvars))
       temp <- temp  %>%
         dplyr::mutate(year = year[i])
 
@@ -104,7 +104,7 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
         colnames(temp)[j+1] <- outvars[j]
       }
 
-      # new_name <-  paste0("p", year[i])
+      # new_name <-  paste0("h", year[i])
       # assign(new_name, temp)
 
       df <- rbind(df, temp)
@@ -114,14 +114,14 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
       if (str_width(klipsvars[k])<=3 | str_width(klipsvars[k]) > 4) {
         inputvars[k] <- klipsvars[k]
       } else {
-        inputvars[k] <- paste0("p", set[i], klipsvars[k])
+        inputvars[k] <- paste0("h", set[i], klipsvars[k])
       }
     }
     for (i in 1:length(year)) {
-      filename <- paste0(path,"klips", set[i], "p", dtype)
+      filename <- paste0(path,"klips", set[i], "h", dtype)
       outputvars <- paste0("temp$", outvars)
 
-      temp <- read_sav(file = filename, encoding='utf-8', col_select=c("pid", inputvars))
+      temp <- read_sav(file = filename, encoding='utf-8', col_select=c("orghid18", inputvars))
       temp <- temp  %>%
         dplyr::mutate(year = year[i])
 
@@ -136,14 +136,14 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
       if (str_width(klipsvars[k])<=3 | str_width(klipsvars[k]) > 4) {
         inputvars[k] <- klipsvars[k]
       } else {
-        inputvars[k] <- paste0("p", set[i], klipsvars[k])
+        inputvars[k] <- paste0("h", set[i], klipsvars[k])
       }
     }
     for (i in 1:length(year)) {
-      filename <- paste0(path,"klips", set[i], "p", dtype)
+      filename <- paste0(path,"klips", set[i], "h", dtype)
       outputvars <- paste0("temp$", outvars)
 
-      temp <- read_sas(data_file = filename,  col_select=c("pid", inputvars))
+      temp <- read_sas(data_file = filename,  col_select=c("orghid18", inputvars))
       temp <- temp  %>%
         dplyr::mutate(year = year[i])
 
@@ -158,11 +158,11 @@ getpklips <- function(path, year, datatype = c("stata", "spss", "sas", "xlsx"), 
       if (str_width(klipsvars[k])<=3 | str_width(klipsvars[k]) > 4) {
         inputvars[k] <- klipsvars[k]
       } else {
-        inputvars[k] <- paste0("p", set[i], klipsvars[k])
+        inputvars[k] <- paste0("h", set[i], klipsvars[k])
       }
     }
     for (i in 1:length(year)) {
-      filename <- paste0(path,"klips", set[i], "p", dtype)
+      filename <- paste0(path,"klips", set[i], "h", dtype)
       outputvars <- paste0("temp$", outvars)
 
       temp <- read_excel(path = filename)
