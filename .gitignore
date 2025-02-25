@@ -4,3 +4,13 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+# Logs
+*.log
+
+# data-raw directories
+data-raw/
+
+#Environment variables
+.env
+
