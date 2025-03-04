@@ -6,7 +6,7 @@
 \alias{tidyklips-package}
 \title{tidyklips: Load Korea Labor & Income Panel Study(KLIPS) Data as 'tidyverse' and 'ts'-Ready Data Frames}
 \description{
-tidyklips is an R package that allows users to interface with the Korea Labor Institute;s yearly KLIPS(Korea Labor & Income Panel Study) and return tidyverse-ready data frames, optionally with time-series features included.
+tidyklips is an R package that allows users to interface with the Korea Labor Institute's KLIPS(Korea Labor & Income Panel Study) panel data and return tidyverse-ready data frames, optionally with time-series features included.
 }
 \author{
 \strong{Maintainer}: Cheon Geun Choi \email{cheongeun.choi@gmail.com}
