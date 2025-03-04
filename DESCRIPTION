@@ -1,6 +1,6 @@
 Package: tidyklips
 Title: Load Korea Labor & Income Panel Study(KLIPS) Data as 'tidyverse' and 'ts'-Ready Data Frames
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Cheon Geun", "Choi", , "cheongeun.choi@gmail.com", role = c("aut", "cre"))
 Description: an R package that allows users to interface with the Korea Labor Institute's KLIPS(Korea Labor & Income Panel Study) panel data and return tidyverse-ready data frames, optionally with time-series features included.
