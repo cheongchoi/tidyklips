@@ -4,9 +4,9 @@
 \name{tidyklips-package}
 \alias{tidyklips}
 \alias{tidyklips-package}
-\title{tidyklips: Load Korea Labor & Income Panel Study(KLIPS) Data as 'tidyverse' and 'ts'-Ready Data Frames}
+\title{tidyklips: Load Korea Labor & Income Panel Study (KLIPS) Data as Data Frames}
 \description{
-tidyklips is an R package that allows users to interface with the Korea Labor Institute's KLIPS(Korea Labor & Income Panel Study) panel data and return tidyverse-ready data frames, optionally with time-series features included.
+Loading the Korea Labor Institute's KLIPS (Korea Labor & Income Panel Study) panel data and returning data frames. Users must download 26 years of panel data from the Korea Labor Institute website and save it in a folder in an appropriate path. The data can be downloaded in stata, spss, sas, or xlsx formats. Afterwards, users can easily convert the data into a data frame using this package.
 }
 \author{
 \strong{Maintainer}: Cheon Geun Choi \email{cheongeun.choi@gmail.com}
