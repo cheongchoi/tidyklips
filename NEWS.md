@@ -3,7 +3,7 @@
 * Initial CRAN submission.
 
 
-# tidyklips (development version) _(2025-03-04)_
+# tidyklips 0.0.9 _(2025-03-04)_
 
 ## Initial Public Release
 
