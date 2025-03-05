@@ -3,8 +3,7 @@ Title: Load Korea Labor & Income Panel Study (KLIPS) Data as Data Frames
 Version: 0.2.0
 Authors@R: 
     person("Cheon Geun", "Choi", , "cheongeun.choi@gmail.com", role = c("aut", "cre"))
-Description: Loading the Korea Labor Institute's KLIPS (Korea Labor & Income Panel Study) panel data and returning data frames. Users must download 26 years of panel data from the Korea Labor Institute website and save it in a folder in an appropriate path. 
-Afterwards, users can easily convert the data into a data frame using this package.
+Description: Loading the Korea Labor Institute's KLIPS (Korea Labor & Income Panel Study) panel data and returning data frames. Users must download 26 years of panel data from the Korea Labor Institute website and save it in a folder in an appropriate path. Afterwards, users can easily convert the data into a data frame using this package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

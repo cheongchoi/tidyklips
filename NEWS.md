@@ -1,4 +1,5 @@
 # tidyklips 0.2.0
+* Minor change in DESCRIPTION
 
 # tidyklips 0.1.0 _(2025-03-05)_
 
